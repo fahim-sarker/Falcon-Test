@@ -20,7 +20,11 @@ const ProductCard = ({ product }) => {
         id: product.id,
         name: product.name,
         slug: product.slug,
-        thumbnail: product.image || product.thumbnail || "/placeholder.svg",
+        thumbnail: product.thumbnail
+          ? `https://images.weserv.nl/?url=${encodeURIComponent(
+            product.thumbnail.replace(/^https?:\/\//, "")
+          )}`
+          : "",
         price: Number(product.price) || 0,
       },
       1
@@ -33,7 +37,7 @@ const ProductCard = ({ product }) => {
       <Link to={`/product-details/${product.slug}`}>
         <div className="relative hover:scale-105 duration-300 ease-in-out">
           <img
-            src={product.image || "/placeholder.svg"}
+            src={product.image}
             alt={product.name}
             className="w-full h-48 object-cover rounded-t-lg"
           />
@@ -123,7 +127,7 @@ const ProductCard = ({ product }) => {
           onClick={handleAddToCart}
           disabled={!product.inStock}
           className={`w-full py-2 px-4 rounded-lg text-sm font-medium transition-colors ${product.inStock
-            ? "bg-teal-500 text-white hover:bg-teal-600"
+            ? "bg-teal-500 text-white hover:bg-teal-600 cursor-pointer"
             : "bg-gray-200 text-gray-500 cursor-not-allowed"
             }`}
         >

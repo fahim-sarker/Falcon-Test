@@ -3,6 +3,8 @@ import { Search, Grid, List } from "lucide-react";
 import Container from "../Components/Shared/Container";
 import ProductCard from "../Components/Shared/ProductCard";
 import { useLocation } from "react-router-dom";
+import SkeletonCard from "../Components/Shared/SkeletonCard";
+
 
 const Shop = () => {
   const [viewMode, setViewMode] = useState("grid");
@@ -22,7 +24,7 @@ const Shop = () => {
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const response = await fetch("http://157.230.240.97:9999/api/v1/categories");
+        const response = await fetch("/api/v1/categories");
         const result = await response.json();
         if (result.data) {
           const categoriesWithCount = result.data.map((cat) => ({
@@ -78,7 +80,7 @@ const Shop = () => {
   const fetchProducts = async (page = 1) => {
     try {
       setLoading(true);
-      let url = `http://157.230.240.97:9999/api/v1/shop/products?page=${page}`;
+      let url = `/api/v1/shop/products?page=${page}`;
       if (selectedCategory) {
         url += `&category_id=${selectedCategory}`;
       }
@@ -94,7 +96,12 @@ const Shop = () => {
         originalPrice: parseFloat(product.regular_price),
         rating: product.rating_avg || 0,
         reviews: product.rating_count || 0,
-        image: product.thumbnail,
+        image: product.thumbnail
+          ? `https://images.weserv.nl/?url=${encodeURIComponent(
+            product.thumbnail.replace(/^https?:\/\//, "")
+          )}`
+          : "",
+
         inStock: product.available_stock > 0,
         isNew: product.badges.some((badge) => badge.name === "New"),
         stock: product.available_stock,
@@ -207,6 +214,7 @@ const Shop = () => {
               </button>
             </div>
           </div>
+
           <div className="w-full lg:w-3/4">
             <div className="bg-white rounded-lg p-4 md:p-6 shadow-sm mb-6">
               <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 flex-wrap">
@@ -245,7 +253,15 @@ const Shop = () => {
                 </div>
               </div>
             </div>
-            {loading && <div className="text-center py-12">Loading...</div>}
+
+            {loading && (
+              <div className={`grid gap-6 ${viewMode === "grid" ? "grid-cols-1 sm:grid-cols-2 lg:grid-cols-3" : "grid-cols-1"}`}>
+                {Array.from({ length: 9 }).map((_, index) => (
+                  <SkeletonCard key={index} />
+                ))}
+              </div>
+            )}
+
             {!loading && (
               <div className={`grid gap-6 ${viewMode === "grid" ? "grid-cols-1 sm:grid-cols-2 lg:grid-cols-3" : "grid-cols-1"}`}>
                 {filteredProducts.map((product) => (
@@ -253,9 +269,11 @@ const Shop = () => {
                 ))}
               </div>
             )}
+
             {!loading && filteredProducts.length === 0 && (
               <div className="text-center py-12">No products found.</div>
             )}
+
             {!loading && totalPages > 1 && (
               <div className="flex flex-wrap justify-center mt-12 space-x-2">
                 <button

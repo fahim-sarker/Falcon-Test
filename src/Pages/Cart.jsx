@@ -112,7 +112,7 @@ const Cart = () => {
                       <div className="flex items-center space-x-2 mt-4">
                         <button
                           onClick={() => handleQuantityChange(item.id, -1)}
-                          className="w-6 h-6 border rounded flex items-center justify-center hover:bg-gray-50"
+                          className="w-6 h-6 border rounded flex items-center justify-center hover:bg-gray-50 cursor-pointer"
                         >
                           <Minus className="w-3 h-3" />
                         </button>
@@ -121,13 +121,13 @@ const Cart = () => {
                         </span>
                         <button
                           onClick={() => handleQuantityChange(item.id, 1)}
-                          className="w-6 h-6 border rounded flex items-center justify-center hover:bg-gray-50"
+                          className="w-6 h-6 border rounded flex items-center justify-center hover:bg-gray-50 cursor-pointer"
                         >
                           <Plus className="w-3 h-3" />
                         </button>
                         <button
                           onClick={() => handleRemoveItem(item.id)}
-                          className="w-6 h-6 flex items-center justify-center text-gray-400 hover:text-red-500"
+                          className="w-6 h-6 flex items-center justify-center text-gray-400 hover:text-red-500 cursor-pointer"
                         >
                           <Trash2 className="w-3 h-3" />
                         </button>
@@ -177,7 +177,7 @@ const Cart = () => {
                   onChange={(e) => setPromoCode(e.target.value)}
                   className="flex-1 px-3 py-2 border border-gray-300 rounded text-sm focus:outline-none focus:border-teal-500 mb-2 sm:mb-0"
                 />
-                <button className="px-4 py-2 bg-teal-500 text-white rounded text-sm hover:bg-teal-600">
+                <button className="px-4 py-2 bg-teal-500 text-white rounded text-sm hover:bg-teal-600 cursor-pointer">
                   Apply
                 </button>
               </div>
@@ -189,7 +189,7 @@ const Cart = () => {
                 </div>
               </div>
 
-              <button className="w-full bg-teal-500 text-white py-2 rounded text-sm font-medium hover:bg-teal-600 mb-3">
+              <button className="w-full bg-teal-500 text-white py-2 rounded text-sm font-medium hover:bg-teal-600 mb-3 cursor-pointer">
                 Proceed to Checkout
               </button>
 

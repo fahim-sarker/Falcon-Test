@@ -27,11 +27,33 @@ const ProductsDetails = () => {
     const fetchProduct = async () => {
       try {
         setLoading(true);
-        const res = await fetch(`http://157.230.240.97:9999/api/v1/shop/product/${slug}`);
+        const res = await fetch(`/api/v1/shop/product/${slug}`);
         if (!res.ok) throw new Error("Failed to fetch product");
         const data = await res.json();
-        setSelectedImage(data.data.thumbnail);
-        setProduct(data.data);
+
+        const thumbnailProxy = data.data.thumbnail
+          ? `https://images.weserv.nl/?url=${encodeURIComponent(
+            data.data.thumbnail.replace(/^https?:\/\//, "")
+          )}`
+          : "";
+
+        const imagesProxy = (data.data.images || []).map(img => ({
+          ...img,
+          url: img.url
+            ? `https://images.weserv.nl/?url=${encodeURIComponent(
+              img.url.replace(/^https?:\/\//, "")
+            )}`
+            : ""
+        }));
+
+        setProduct({
+          ...data.data,
+          thumbnail: thumbnailProxy,
+          images: imagesProxy
+        });
+
+        setSelectedImage(thumbnailProxy);
+
       } catch (err) {
         setError(err.message);
       } finally {
@@ -51,12 +73,12 @@ const ProductsDetails = () => {
         id: product.id,
         name: product.name,
         slug: product.slug,
-        thumbnail: product.image || product.thumbnail,
+        thumbnail: product.thumbnail,
         price: Number(product.discount_price) || 0,
       },
-      1
+      quantity
     );
-    toast("add to cart successfully")
+    toast("Added to cart successfully!");
     navigate("/cart");
   };
 
@@ -79,7 +101,7 @@ const ProductsDetails = () => {
               ].map((image, i) => (
                 <img
                   key={i}
-                  src={image.url || "/placeholder.svg"}
+                  src={image.url}
                   alt={`${product.name} image ${i + 1}`}
                   className="w-16 h-16 object-cover cursor-pointer rounded border border-gray-300 flex-shrink-0"
                   onClick={() => setSelectedImage(image.url)}
@@ -149,7 +171,7 @@ const ProductsDetails = () => {
                   <span className="text-lg font-medium min-w-[2rem] text-center">{quantity.toString().padStart(2, "0")}</span>
 
                   <button
-                    className="w-10 h-10 rounded-full border border-gray-500 flex items-center justify-center"
+                    className="w-10 h-10 rounded-full border border-gray-500 flex items-center justify-center cursor-pointer"
                     onClick={() => handleQuantityChange(1)}
                   >
                     <BiPlus className="w-4 h-4" />
@@ -159,7 +181,7 @@ const ProductsDetails = () => {
 
               <button
                 onClick={handleAddToCart}
-                className="w-full rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white py-3 text-base font-medium"
+                className="w-full rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white py-3 text-base font-medium cursor-pointer"
               >
                 Add to Cart
               </button>
@@ -170,7 +192,6 @@ const ProductsDetails = () => {
             <div className="space-y-4">
               <div className="bg-white border-2 border-gray-200 rounded-lg p-4">
                 <h3 className="text-lg font-medium text-gray-900 mb-4">Delivery Options</h3>
-
                 <div className="flex items-start space-x-3 mb-4">
                   <div className="w-8 h-8 bg-teal-100 rounded-lg flex items-center justify-center">
                     <Package className="w-5 h-5 text-teal-600" />
@@ -180,7 +201,6 @@ const ProductsDetails = () => {
                     <div className="text-sm text-gray-500">Delivery within 2-3 days</div>
                   </div>
                 </div>
-
                 <div className="flex items-start space-x-3 opacity-50">
                   <div className="w-8 h-8 bg-gray-100 rounded-lg flex items-center justify-center">
                     <Truck className="w-5 h-5 text-gray-400" />
@@ -194,7 +214,6 @@ const ProductsDetails = () => {
                   </div>
                 </div>
               </div>
-
               <div className="bg-white border-2 border-gray-200 rounded-lg p-4 space-y-4">
                 <h4 className="text-sm font-medium text-gray-700">Sold by</h4>
 
@@ -244,6 +263,7 @@ const ProductsDetails = () => {
               </div>
             </div>
           </div>
+
         </div>
       </Container>
     </section>
