@@ -1,12 +1,30 @@
-# React + Vite
+Falcon E-Commerce Store
+This is a simple and clean e-commerce web app built with React. It’s designed to be responsive and user-friendly, letting customers browse products, filter by category, search, sort, and manage their cart easily.
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+What’s Inside?
+Browse products by category with a neat filter sidebar
 
-Currently, two official plugins are available:
+Search bar with sorting options (price, rating, newest)
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+Product detail pages with images, sizes, quantity selector
 
-## Expanding the ESLint configuration
+Cart management: select items, update quantities, remove items
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+Promo code input (UI only for now)
+
+Order summary with totals and a checkout button
+
+Responsive layout that works on desktop and mobile
+
+Smooth user experience with toast notifications
+
+Technologies Used
+React with functional components and hooks
+
+React Router for navigation
+
+Context API to manage cart state
+
+Tailwind CSS for styling and responsiveness
+
+React Toastify for notifications
