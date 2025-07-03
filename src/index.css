@@ -1,0 +1,9 @@
+/* Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Onest:wght@100..900&display=swap');
+
+@import "tailwindcss";
+
+
+@theme {
+  --font-onset: "Onest", sans-serif;
+}
